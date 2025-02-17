@@ -1,4 +1,5 @@
-import { atom } from "jotai";
+import { atom } from 'jotai';
+import { UserEntity } from '@/shared/models/';
 
 export const jwtState = atom<string|null>(
   localStorage.getItem("accessToken")
@@ -6,11 +7,10 @@ export const jwtState = atom<string|null>(
     : null
 );
 
-export const isAuthenticatedState = atom<boolean>(false);
+export const isAuthenticatedState = atom<boolean>(false)
 
-// export const refreshTokens = selector({
-//   key: 'refreshTokens',
-//   set: ({get, set}) => {
-//
-//   }
-// })
+export const currentUser = atom(
+  localStorage.getItem('currentUser')
+  ? JSON.parse(localStorage.getItem('currentUser')!) as UserEntity
+  : {} as UserEntity
+)
