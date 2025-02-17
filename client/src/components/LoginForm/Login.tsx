@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { useSetAtom } from 'jotai';
-import { jwtState, isAuthenticatedState } from '@/atoms.ts';
+import { jwtState, isAuthenticatedState, currentUser } from '@/atoms.ts';
 import { useForm } from '@mantine/form';
 import apiClient from '@/shared/axios.apiClient.ts';
 import {
@@ -14,6 +14,7 @@ import {
   Title,
 } from '@mantine/core';
 import classes from './LoginPage.module.css';
+import { AuthEntity } from '@/shared/models';
 
 interface ILoginFormProps {}
 
@@ -26,6 +27,7 @@ const LoginForm: React.FC<ILoginFormProps> = () => {
 
   const setJwt = useSetAtom(jwtState);
   const setIsAuthenticated = useSetAtom(isAuthenticatedState);
+  const setCurrentUser = useSetAtom(currentUser);
 
   const form = useForm<ILoginFormState>({
     mode: 'uncontrolled',
@@ -43,14 +45,16 @@ const LoginForm: React.FC<ILoginFormProps> = () => {
   const handleSubmit = async (data: ILoginFormState)=> {
     try {
       setLoading(true);
-      const response: AxiosResponse = await apiClient.post('/auth/login', {
+      const response: AxiosResponse<AuthEntity> = await apiClient.post('/auth/login', {
         email: data.username,
         password: data.password,
       });
 
       if (response.status === 200) {
         setJwt(response.data.accessToken);
+        setCurrentUser(response.data?.user);
         localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('currentUser', JSON.stringify(response.data.user));
         setIsAuthenticated(true);
       } else {
         setLoading(false)

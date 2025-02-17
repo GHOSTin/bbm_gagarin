@@ -10,8 +10,8 @@ import {
   IconSettings,
   IconSwitchHorizontal,
 } from '@tabler/icons-react';
-import { Code, Group } from '@mantine/core';
 import classes from './NavbarSimple.module.css';
+import { UserButton } from '@/components/UserButton/UserButton.tsx';
 
 const data = [
   { link: '', label: 'Notifications', icon: IconBellRinging },
@@ -45,9 +45,9 @@ export function NavbarSimple() {
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
-        <Group className={classes.header} justify="space-between">
-          <Code fw={700}>v3.1.2</Code>
-        </Group>
+        <div className={classes.section}>
+          <UserButton />
+        </div>
         {links}
       </div>
 
