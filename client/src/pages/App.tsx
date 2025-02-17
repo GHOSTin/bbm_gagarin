@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSetAtom } from "jotai";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { isAuthenticatedState } from '../atoms.ts';
-import LoginPage from '@/pages/Login.tsx';
+import LoginPage from '@/pages/LoginPage.tsx';
 import ProfilePage from '@/pages/profilePage.tsx';
 import { PrivateRoute } from '@/components/Routes/privateRoute.tsx';
 import { PublicRoute } from '@/components/Routes/publicRoute.tsx';
