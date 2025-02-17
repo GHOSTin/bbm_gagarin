@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { useSetAtom } from 'jotai';
 import { jwtState, isAuthenticatedState } from '@/atoms.ts';
-//import { Button, Card, Input, Stack } from '@chakra-ui/react';
-//import { Field } from '@/components/ui/field';
 import { useForm } from '@mantine/form';
 import apiClient from '@/shared/axios.apiClient.ts';
 import {
@@ -24,7 +22,7 @@ interface ILoginFormState {
   password: string;
 }
 
-const Login: React.FC<ILoginFormProps> = () => {
+const LoginForm: React.FC<ILoginFormProps> = () => {
 
   const setJwt = useSetAtom(jwtState);
   const setIsAuthenticated = useSetAtom(isAuthenticatedState);
@@ -101,4 +99,4 @@ const Login: React.FC<ILoginFormProps> = () => {
 );
 };
 
-export default Login;
+export default LoginForm;
