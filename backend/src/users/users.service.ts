@@ -35,7 +35,7 @@ export class UsersService {
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     return this.prisma.user.create({
-      data
+      data: {...data, password: await argon2.hash(data?.password!)}
     });
   }
 
