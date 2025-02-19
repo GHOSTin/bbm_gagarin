@@ -14,3 +14,5 @@ export const currentUser = atom(
   ? JSON.parse(localStorage.getItem('currentUser')!) as UserEntity
   : {} as UserEntity
 )
+
+export const userRoleState = atom<string | null>(( get) => get(currentUser)?.role??null)

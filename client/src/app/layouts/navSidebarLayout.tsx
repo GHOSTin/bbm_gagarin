@@ -1,7 +1,8 @@
 import React from 'react';
-import { NavbarSimple } from '@/components/Navbar/Navbar.tsx';
+import { NavbarSimple } from '@/components/ui/Navbar/Navbar.tsx';
 import { useDisclosure } from '@mantine/hooks';
 import { AppShell, Avatar, Burger, Group, Text } from '@mantine/core';
+import { Outlet } from 'react-router-dom';
 
 export const NavSidebarLayout: React.FC<React.PropsWithChildren> = ({children}) => {
   const [ opened, { toggle } ] = useDisclosure()
@@ -39,7 +40,7 @@ export const NavSidebarLayout: React.FC<React.PropsWithChildren> = ({children}) 
 
       <AppShell.Navbar><NavbarSimple/></AppShell.Navbar>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>{children} <Outlet/></AppShell.Main>
     </AppShell>
   );
 }
