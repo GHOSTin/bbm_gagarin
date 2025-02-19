@@ -15,8 +15,9 @@ export class UserEntity {
     'id': number;
     'createdAt': Date;
     'updatedAt': Date;
-    'name': string;
+    'name': any;
     'email': string;
+    'role': string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -48,6 +49,12 @@ export class UserEntity {
         {
             "name": "email",
             "baseName": "email",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "role",
+            "baseName": "role",
             "type": "string",
             "format": ""
         }    ];

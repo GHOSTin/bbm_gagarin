@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { isAuthenticatedState } from '../atoms.ts';
 import LoginPage from '@/pages/LoginPage.tsx';
 import ProfilePage from '@/pages/profilePage.tsx';
-import { PrivateRoute } from '@/components/Routes/privateRoute.tsx';
-import { PublicRoute } from '@/components/Routes/publicRoute.tsx';
+import { PublicRoute } from '@/components/routes/publicRoute.tsx';
+import { NavSidebarLayout } from '@/app/layouts/navSidebarLayout.tsx';
+import { PrivateRoute } from '@/components/routes/privateRoute.tsx';
 
 const App: React.FC = () => {
   // const [isAuthenticated] = useState(false);
@@ -24,7 +25,11 @@ const App: React.FC = () => {
             <Route path="/login" element={<LoginPage/>} />
           </Route>
           <Route element={<PrivateRoute/>}>
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route element={<NavSidebarLayout/>}>
+              <Route index path="/" element={<></>}/>
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="*" element={<div>404... not found </div>} />
+            </Route>
           </Route>
           {/* Дополнительные маршруты могут быть добавлены здесь */}
           <Route path="*" element={<div>404... not found </div>} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginForm from '@/components/LoginForm/Login.tsx';
+import LoginForm from '@/components/ui/LoginForm/LoginForm.tsx';
 import { Container, Grid } from '@mantine/core';
 
 const LoginPage: React.FC = () => {
