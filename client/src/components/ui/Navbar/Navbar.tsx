@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  IconAlbum,
+  IconAlbum, IconChecklist,
   IconUsers,
 } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
@@ -13,6 +13,7 @@ import { NavLink } from 'react-router-dom';
 const data = [
   { link: '/profiles', label: 'Профили пользователей', key: 'profile', icon: IconUsers, allowedRoles: ['ADMIN', 'MODERATOR'] },
   { link: '/groups', label: 'Список отрядов', key: 'groups', icon: IconAlbum, allowedRoles: ['ADMIN'] },
+  { link: '/checklists', label: 'Мои чеклисты', key: 'checklists', icon: IconChecklist, allowedRoles: ['USER'] },
 ];
 
 export function NavbarSimple() {
