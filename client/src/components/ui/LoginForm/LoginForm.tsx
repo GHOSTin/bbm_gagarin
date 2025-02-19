@@ -13,7 +13,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import classes from './LoginPage.module.css';
+import classes from './LoginForm.module.css';
 import { AuthEntity } from '@/shared/models';
 
 interface ILoginFormProps {}
