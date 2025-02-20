@@ -1,0 +1,7 @@
+.card {
+    background-color: var(--mantine-color-body);
+}
+
+.resultScore {
+    padding: 10px 0;
+}

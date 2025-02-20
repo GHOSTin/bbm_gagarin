@@ -7,6 +7,7 @@ import ProfilePage from '@/pages/profilePage.tsx';
 import { NavSidebarLayout } from '@/app/layouts/navSidebarLayout.tsx';
 import { NotFound } from '@/components/ui/NotFound';
 import { PrivateRoute, PublicRoute } from '@/components/routes';
+import { TestEPI } from '@/components/ui/testEPI';
 
 const App: React.FC = () => {
   // const [isAuthenticated] = useState(false);
@@ -28,6 +29,7 @@ const App: React.FC = () => {
             <Route element={<NavSidebarLayout/>}>
               <Route index path="/" element={<></>}/>
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/test-epi" element={<TestEPI/>} />
               <Route path="*" element={<NotFound/>} />
             </Route>
           </Route>
