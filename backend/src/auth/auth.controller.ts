@@ -32,7 +32,7 @@ export class AuthController {
   @Post('logout')
   @HttpCode(200)
   logout(@Request() req, @Res({passthrough: true}) Response: Response) {
-    this.authService.logout(req.user?.['sub'], Response);
+    this.authService.logout(req.user?.['id'], Response);
   }
 
   @UseGuards(RefreshTokenGuard)
