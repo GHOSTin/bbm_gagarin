@@ -34,11 +34,15 @@ export const TestEPI: React.FC = () => {
     event.preventDefault();
     // Обработка ответов в соответствии с ключом
     try {
-      const response = await apiClient.post('tests/test-epi', {
-        temperamentType,
-        lieScore,
-        extroversionScore,
-        neuroticismScore
+      const response = await apiClient.post('tests/', {
+        type: 'epi',
+        testCompleted: true,
+        result: {
+          temperamentType,
+          lieScore,
+          extroversionScore,
+          neuroticismScore
+        }
       });
 
       if (response?.status === 200) {
