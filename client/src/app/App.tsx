@@ -11,7 +11,6 @@ import { TestEPI } from '@/components/ui/testEPI';
 import { TestHolland } from '@/components/ui/testHolland/testHolland.tsx';
 
 const App: React.FC = () => {
-  // const [isAuthenticated] = useState(false);
   const isAuthenticatedSet = useSetAtom(isAuthenticatedState);
 
   useEffect(() => {
@@ -29,10 +28,20 @@ const App: React.FC = () => {
           <Route element={<PrivateRoute/>}>
             <Route element={<NavSidebarLayout/>}>
               <Route index path="/" element={<></>}/>
+              <Route path="*" element={<NotFound/>} />
+            </Route>
+          </Route>
+          <Route element={<PrivateRoute accessRoles={['USER']}/>}>
+            <Route element={<NavSidebarLayout/>}>
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/test-epi" element={<TestEPI/>} />
               <Route path="/test-holland" element={<TestHolland/>} />
-              <Route path="*" element={<NotFound/>} />
+            </Route>
+          </Route>
+          <Route element={<PrivateRoute accessRoles={['ADMIN', 'MODERATOR']}/>}>
+            <Route element={<NavSidebarLayout/>}>
+              <Route path="/profiles" element={<ProfilePage />} />
+              <Route path="/profiles/:id" element={<ProfilePage />} />
             </Route>
           </Route>
           {/* Дополнительные маршруты могут быть добавлены здесь */}
