@@ -6,11 +6,13 @@ import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { ProfilesModule } from './profiles/profiles.module';
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
+    ProfilesModule,
     PrismaModule,
     JwtModule,
     ConfigModule.forRoot({

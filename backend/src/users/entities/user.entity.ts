@@ -16,7 +16,7 @@ export class UserEntity implements User {
   @ApiProperty()
   updatedAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({required: false})
   name: string | null;
 
   @ApiProperty()
@@ -28,6 +28,6 @@ export class UserEntity implements User {
   @Exclude()
   refreshToken: string | null;
 
-  @ApiProperty()
+  @ApiProperty({enum: Roles})
   role: Roles
 }

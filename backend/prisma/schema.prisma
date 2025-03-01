@@ -20,30 +20,32 @@ enum Roles {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String?
-  password String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
-  refreshToken  String?
-  role Roles @default(USER)
-  profile Profile?
+  id           Int      @default(autoincrement()) @id
+  email        String   @unique
+  name         String?
+  password     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  refreshToken String?
+  role         Roles    @default(USER)
+  profile      Profile?
 }
 
 model Profile {
-  id String  @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId Int @unique
-  groupNumber Group?
-  firstname String
-  lastName String
-  middleName String?
+  id          String    @id @default(uuid()) @unique
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int       @unique
+  group       Group?    @relation(fields: [groupId], references: [id])
+  groupId     String?   @unique
+  firstName   String
+  lastName    String
+  middleName  String?
+  birthday    DateTime?
+  acceptTerms Boolean   @default(false)
 }
 
 model Group {
-  id String @id @default(uuid()) @unique
-  profile Profile @relation(fields: [profileId], references: [id])
-  profileId String @unique
-  name String
+  id      String   @id @default(uuid()) @unique
+  profile Profile?
+  name    String
 }
