@@ -1,13 +1,13 @@
-import { Body, Controller, Get, Post, Param, ParseIntPipe, Patch, Delete, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UserEntity } from './entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../roles/guards/roles.guard';
-import { Roles } from '../roles/roles.decorator';
-import { Role } from '../roles/roles.enum';
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@/roles/guards/roles.guard';
+import { Roles } from '@/roles/roles.decorator';
+import { Role } from '@/roles/roles.enum';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 @ApiTags('users')
@@ -15,12 +15,19 @@ import { Role } from '../roles/roles.enum';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @ApiBearerAuth()
   @Post()
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @ApiOkResponse({type: UserEntity})
   async create(@Body() createUserDto: CreateUserDto) {
-    return new UserEntity(await this.usersService.createUser(createUserDto))
+    const user = {...createUserDto, profile: {
+      create: {
+        firstName: '',
+        lastName: ''
+      }
+    }}
+    return new UserEntity(await this.usersService.createUser(user));
   }
 
   @ApiBearerAuth()
@@ -49,7 +56,7 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return new UserEntity(await this.usersService.updateUser({where: {id: id}, data: updateUserDto}));
+    return new UserEntity(await this.usersService.updateUser({where: {id: id, createdAt: new Date(Date.now())}, data: updateUserDto}));
   }
 
   @Delete(':id')
