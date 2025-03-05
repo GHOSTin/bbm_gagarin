@@ -17,7 +17,7 @@ const data = [
 ];
 
 export function NavbarSimple() {
-  const [active, setActive] = useState('Billing');
+  const [active, setActive] = useState('');
   const userRole = useAtomValue(userRoleState);
   const links = data.filter((elem) => !elem.allowedRoles || elem.allowedRoles?.includes(userRole!)).map((item) => (
     <NavLink
@@ -38,7 +38,9 @@ export function NavbarSimple() {
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
         <div className={classes.section}>
-          <UserButton />
+          <NavLink to={'/profile'} className={classes.navLink}>
+            <UserButton />
+          </NavLink>
         </div>
         {links}
       </div>

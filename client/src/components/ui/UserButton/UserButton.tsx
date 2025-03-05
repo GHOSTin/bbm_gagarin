@@ -16,7 +16,7 @@ export function UserButton() {
 
         <div style={{ flex: 1 }}>
           <Text size="sm" fw={500}>
-            {userProfile?.name}
+            {(userProfile?.profile && `${userProfile?.profile?.firstName} ${userProfile?.profile?.lastName}`) || userProfile?.name}
           </Text>
 
           <Text c="dimmed" size="xs">

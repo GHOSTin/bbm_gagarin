@@ -1,4 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import globalRouter from '@/shared/globalRouter.ts';
+import { AuthEntity } from '@/shared/models';
 
 const apiClient = axios.create({
   baseURL: `${import.meta.env.VITE_REACT_APP_API_URL}`,
@@ -15,8 +17,20 @@ export const refreshAccessTokenFn = async () => {
 
 export const logoutUserFn = async () => {
   const response = await apiClient.post('/auth/logout');
+  if (response.status === 200) {
+    localStorage.removeItem('accessToken');
+    globalRouter.navigate && globalRouter.navigate("/login", {replace: true});
+  }
   return response.data;
 };
+
+export const loginUserFn = async (data: { username: string; password: string; }) => {
+  const response: AxiosResponse<AuthEntity> = await apiClient.post('/auth/login', {
+    email: data.username,
+    password: data.password,
+  });
+  return response.data;
+}
 
 apiClient.interceptors.request.use(
   (config) => {
@@ -27,7 +41,7 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error); // Handle request errors
+    return Promise.reject(error);
   }
 );
 
@@ -44,17 +58,15 @@ apiClient.interceptors.response.use(
       try {
         const tokens = await refreshAccessTokenFn();
 
-        // Update the Authorization header and retry the original request
+        localStorage.setItem('accessToken', tokens.accessToken)
         originalRequest.headers['Authorization'] = `Bearer ${tokens.accessToken}`;
         return apiClient(originalRequest);
       } catch (err) {
-        // Logout the user if token refresh fails
         await logoutUserFn();
         return Promise.reject(err);
       }
     }
-
-    return Promise.reject(error); // Handle other errors
+    return Promise.reject(error);
   }
 );
 

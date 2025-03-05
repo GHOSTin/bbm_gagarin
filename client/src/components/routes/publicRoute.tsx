@@ -14,7 +14,7 @@ export const PublicRoute: React.FC<React.PropsWithChildren<RouteProps>> = ({ chi
   let state = location.state as { from: Location };
   let from = state ? state.from.pathname : '/';
 
-  return !auth ? ( //Check if logged in
+  return !auth ? (
     <>
       {children}
       <Outlet />

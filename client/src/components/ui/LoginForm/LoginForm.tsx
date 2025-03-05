@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { AxiosResponse } from 'axios';
 import { useSetAtom } from 'jotai';
-import { jwtState, isAuthenticatedState, currentUser } from '@/atoms.ts';
+import { jwtState, isAuthenticatedState } from '@/atoms.ts';
 import { useForm } from '@mantine/form';
-import apiClient from '@/shared/axios.apiClient.ts';
+import { loginUserFn } from '@/shared/axios.apiClient.ts';
 import {
   Anchor,
   Button,
@@ -14,7 +13,6 @@ import {
   Title,
 } from '@mantine/core';
 import classes from './LoginForm.module.css';
-import { AuthEntity } from '@/shared/models';
 
 interface ILoginFormProps {}
 
@@ -27,7 +25,6 @@ const LoginForm: React.FC<ILoginFormProps> = () => {
 
   const setJwt = useSetAtom(jwtState);
   const setIsAuthenticated = useSetAtom(isAuthenticatedState);
-  const setCurrentUser = useSetAtom(currentUser);
 
   const form = useForm<ILoginFormState>({
     mode: 'uncontrolled',
@@ -45,16 +42,10 @@ const LoginForm: React.FC<ILoginFormProps> = () => {
   const handleSubmit = async (data: ILoginFormState)=> {
     try {
       setLoading(true);
-      const response: AxiosResponse<AuthEntity> = await apiClient.post('/auth/login', {
-        email: data.username,
-        password: data.password,
-      });
-
-      if (response.status === 200) {
-        setJwt(response.data.accessToken);
-        setCurrentUser(response.data?.user);
-        localStorage.setItem('accessToken', response.data.accessToken);
-        localStorage.setItem('currentUser', JSON.stringify(response.data.user));
+      const response = await loginUserFn(data);
+      if (response) {
+        setJwt(response.accessToken);
+        localStorage.setItem('accessToken', response.accessToken);
         setIsAuthenticated(true);
       } else {
         setLoading(false)
@@ -71,31 +62,31 @@ const LoginForm: React.FC<ILoginFormProps> = () => {
     <div className={classes.wrapper}>
       <Paper className={classes.form} radius={0} p={30}>
         <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
-          Welcome back to Mantine!
+          Добро пожаловать!
         </Title>
         <form onSubmit={form.onSubmit(handleSubmit)} className={'login_form_root'}>
           <TextInput
-            label="Email address"
+            label="Логин"
             placeholder="hello@gmail.com"
             size="md"
             key={form.key('username')}
             {...form.getInputProps('username')}
           />
           <PasswordInput
-            label="Password"
-            placeholder="Your password"
+            label="Пароль"
+            placeholder="Ваш пароль"
             mt="md"
             size="md"
             key={form.key('password')}
             {...form.getInputProps('password')}
           />
           <Button fullWidth mt="xl" size="md" type="submit" loading={loading} loaderProps={{ type: 'dots' }}>
-            Login
+            Войти
           </Button>
         </form>
           <Text ta="center" mt="md">
             <Anchor component="button" size="sm" onClick={(event) => event.preventDefault()}>
-              Forgot password?
+              Забыли пароль?
             </Anchor>
           </Text>
       </Paper>
