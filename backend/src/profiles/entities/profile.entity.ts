@@ -24,4 +24,7 @@ export class ProfileEntity {
 
   @ApiProperty()
   acceptTerms: boolean
+
+  @ApiProperty()
+  phone?: string
 }
