@@ -13,6 +13,7 @@ import { useAtomsDevtools } from 'jotai-devtools/utils';
 import globalRouter from '@/shared/globalRouter.ts';
 import { ProfilesPage } from '@/pages/profilesPage.tsx';
 import CurrentProfilePage from '@/pages/currentProfilePage.tsx';
+import HomePage from '@/pages/homePage.tsx';
 
 const AtomsDevtools: React.FC<React.PropsWithChildren> = ({ children }) => {
   useAtomsDevtools('bbm')
@@ -39,7 +40,7 @@ const App: React.FC = () => {
           </Route>
           <Route element={<PrivateRoute/>}>
             <Route element={<NavSidebarLayout/>}>
-              <Route index path="/" element={<></>}/>
+              <Route index path="/" element={<HomePage/>}/>
               <Route path="/profile" element={<CurrentProfilePage/>} />
               <Route path="*" element={<NotFound/>} />
             </Route>
