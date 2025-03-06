@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ProfilesModule } from './profiles/profiles.module';
+import { TestsModule } from './tests/tests.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { ProfilesModule } from './profiles/profiles.module';
     JwtModule,
     ConfigModule.forRoot({
       isGlobal: true,
-    })
+    }),
+    TestsModule
   ],
   controllers: [AppController],
   providers: [
