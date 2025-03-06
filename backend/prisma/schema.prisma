@@ -41,6 +41,7 @@ model Profile {
   lastName    String
   middleName  String?
   birthday    DateTime?
+  phone       String?   @default("")
   acceptTerms Boolean   @default(false)
 }
 

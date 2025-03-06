@@ -27,12 +27,14 @@ export class AuthController {
     return this.authService.login(LoginDto, Response)
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Post('logout')
   @HttpCode(200)
   logout(@Request() req, @Res({passthrough: true}) Response: Response) {
-    this.authService.logout(req.user?.['id'], Response);
+    if(req.user) {
+      this.authService.logout(req.user?.['id'], Response);
+    }
   }
 
   @UseGuards(RefreshTokenGuard)

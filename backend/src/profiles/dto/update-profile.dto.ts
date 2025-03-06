@@ -1,4 +1,4 @@
 import { OmitType, PartialType } from '@nestjs/swagger';
-import { CreateProfileDto } from './create-profile.dto';
+import { ProfileEntity } from '@/profiles/entities/profile.entity';
 
-export class UpdateProfileDto extends PartialType(OmitType(CreateProfileDto, ['userId'])) {}
+export class UpdateProfileDto extends PartialType(OmitType(ProfileEntity, ['userId', 'groupId', 'phone'])) {}

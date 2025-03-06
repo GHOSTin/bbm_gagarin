@@ -32,4 +32,8 @@ export class CreateProfileDto {
   @ApiProperty()
   @IsBoolean()
   acceptTerms: false
+
+  @ApiProperty({required: false})
+  @IsString()
+  phone?: string
 }

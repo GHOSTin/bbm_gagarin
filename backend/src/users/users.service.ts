@@ -33,6 +33,9 @@ export class UsersService {
       cursor,
       where,
       orderBy,
+      include: {
+        profile: true
+      }
     });
   }
 

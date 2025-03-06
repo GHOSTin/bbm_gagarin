@@ -48,15 +48,23 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.ADMIN, Role.MODERATOR)
-  @UseGuards(RolesGuard)
+  // @Roles(Role.ADMIN, Role.MODERATOR)
+  // @UseGuards(RolesGuard)
   @Patch(':id')
   @ApiOkResponse({ type: UserEntity })
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return new UserEntity(await this.usersService.updateUser({where: {id: id, createdAt: new Date(Date.now())}, data: updateUserDto}));
+    const data = {
+      name: updateUserDto.name,
+      profile: {
+        update: {
+          ...updateUserDto.profile
+        }
+      }
+    }
+    return new UserEntity(await this.usersService.updateUser({where: {id: id}, data: {...data, updatedAt: new Date(Date.now())}}));
   }
 
   @Delete(':id')
