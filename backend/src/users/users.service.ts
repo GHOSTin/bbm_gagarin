@@ -14,7 +14,8 @@ export class UsersService {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
       include: {
-        profile: true
+        profile: true,
+        completedTests: true
       }
     });
   }
@@ -34,7 +35,8 @@ export class UsersService {
       where,
       orderBy,
       include: {
-        profile: true
+        profile: true,
+        completedTests: true
       }
     });
   }

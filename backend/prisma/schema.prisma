@@ -20,15 +20,16 @@ enum Roles {
 }
 
 model User {
-  id           Int      @default(autoincrement()) @id
-  email        String   @unique
-  name         String?
-  password     String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
-  refreshToken String?
-  role         Roles    @default(USER)
-  profile      Profile?
+  id             Int         @default(autoincrement()) @id
+  email          String      @unique
+  name           String?
+  password       String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @default(now())
+  refreshToken   String?
+  role           Roles       @default(USER)
+  profile        Profile?
+  completedTests UsersTest[]
 }
 
 model Profile {
@@ -49,4 +50,13 @@ model Group {
   id      String   @id @default(uuid()) @unique
   profile Profile?
   name    String
+}
+
+model UsersTest {
+  id         String  @id @default(uuid()) @unique
+  testId     Int
+  user       User    @relation(fields: [userId], references: [id])
+  userId     Int
+  isComplete Boolean @default(false)
+  results    String
 }
