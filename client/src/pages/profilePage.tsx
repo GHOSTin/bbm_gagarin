@@ -4,7 +4,7 @@ import { UserEntityIdAtom } from '@/atoms.ts';
 import 'dayjs/locale/ru';
 import apiClient from '@/shared/axios.apiClient.ts';
 import { useParams } from 'react-router-dom';
-import { UserEntity } from '@/shared/models';
+import { UserEntity } from '../shared/types';
 import Profile from '@/components/profiles/profile.tsx';
 
 interface ProfilePageProps {}

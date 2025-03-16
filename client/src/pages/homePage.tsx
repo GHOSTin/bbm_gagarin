@@ -7,10 +7,10 @@ import { IconArrowUp } from '@tabler/icons-react';
 import classes from './homePage.module.css';
 
 const testsLinks = [
-  {id: 1, name:'Тест EPI', description: 'description', path: '/test-epi' },
-  {id: 2, name:'Тест Холланда', description: 'description', path: '/test-holland' },
-  {id: 3, name:'Тест EPI', description: 'description', path: '/test-epi' },
-  {id: 4, name:'Тест EPI', description: 'description', path: '/test-epi' },
+  {id: 'epi', name:'Тест EPI', description: 'description', path: '/test-epi' },
+  {id: 'holland', name:'Тест Холланда', description: 'description', path: '/test-holland' },
+  {id: '3', name:'Тест EPI', description: 'description', path: '/test-epi' },
+  {id: '4', name:'Тест EPI', description: 'description', path: '/test-epi' },
 ]
 
 const HomePage: React.FC = () => {
@@ -59,7 +59,7 @@ const HomePage: React.FC = () => {
                   </Text>
                 </div>
                 <Checkbox
-                  checked={false}
+                  checked={Object.values(user.completedTests).map((test)=>test.type).includes(test.id)}
                   tabIndex={-1}
                 />
               </UnstyledButton>

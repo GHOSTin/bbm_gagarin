@@ -3,7 +3,7 @@ import { ActionIcon, Avatar, Checkbox, Group, ScrollArea, Skeleton, Table, Text 
 import apiClient from '@/shared/axios.apiClient.ts';
 import cx from 'clsx';
 import classes from './profilesPage.module.css'
-import { UserEntity } from '@/shared/models';
+import { UserEntity } from '../shared/types';
 import { IconUser } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 

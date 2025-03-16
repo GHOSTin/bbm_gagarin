@@ -7,6 +7,8 @@ import { TestHollandResultDisplay } from '@/components/ui/testHolland/testHollan
 import classes from '@/components/ui/testEPI/testEPI.module.css';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '@/shared/axios.apiClient.ts';
+import { currentUser } from '@/atoms.ts';
+import { useAtom } from 'jotai';
 
 type ScalesType = {
   [key: string] : Array<[number, string]>
@@ -15,6 +17,8 @@ type ScalesType = {
 export const TestHolland: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [mainScale, setMainScale] = useState<string>('');
+  const [results, setResults] = useState<{ [key: string]: number }>({});
+  const [user, setUser] = useAtom(currentUser);
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {checkValues: [] as string[]},
@@ -47,7 +51,9 @@ export const TestHolland: React.FC = () => {
       });
 
       console.log('Results:', results);
-      setMainScale(Object.entries(results).sort(([,a], [,b])=>b-a)[0][0])
+      const maxScale = Object.entries(results).sort(([,a], [,b])=>b-a)[0][0]
+      setMainScale(maxScale);
+      setResults(results)
     }
   };
 
@@ -55,12 +61,14 @@ export const TestHolland: React.FC = () => {
     try {
       const response = await apiClient.post('tests/', {
         type: 'holland',
-        result: {scale: mainScale},
-        testCompleted: true
+        result: {scale: mainScale, results: results},
+        isComplete: true
       });
       if(response?.status === 200 ) {
+        const testResults = user.completedTests;
+        testResults.push(response.data);
+        setUser({...user, completedTests: testResults})
         navigate('/')
-        //TODO обработка корректного ответа от сервера
       }
     } catch {
       navigate('/')
@@ -71,7 +79,7 @@ export const TestHolland: React.FC = () => {
     <Card withBorder radius="md" p="xl" className={classes.card}>
       <Text size="lg" fw={700}>
         Тест на определение профессионального типа личности
-      </Text>
+      </Text>0.0.
       <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
         {currentQuestion < questionPairs.length && (
           <div className="question">

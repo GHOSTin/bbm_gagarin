@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { UserEntity } from '@/shared/models/';
+import { UserEntity } from '@/shared/types/';
 import apiClient from '@/shared/axios.apiClient.ts';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { atomWithDefault } from 'jotai/utils';

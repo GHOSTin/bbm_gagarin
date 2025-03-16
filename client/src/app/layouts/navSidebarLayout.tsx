@@ -39,7 +39,6 @@ export const NavSidebarLayout: React.FC<React.PropsWithChildren> = ({children}) 
       </AppShell.Header>
 
       <AppShell.Navbar><NavbarSimple/></AppShell.Navbar>
-
       <AppShell.Main>{children} <Outlet/></AppShell.Main>
     </AppShell>
   );

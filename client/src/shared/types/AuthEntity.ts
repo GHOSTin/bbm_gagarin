@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserEntity } from '@/shared/models/UserEntity.ts';
+import { UserEntity } from '@/shared/types/UserEntity.ts';
 
 
 export class AuthEntity {

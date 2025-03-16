@@ -11,6 +11,7 @@ const CurrentProfilePage: React.FC<ProfilePageProps> = () => {
 
   return (
     <>
+      {profileUser.completedTests.map((res)=>`${res.type}`)}
       <Profile user={profileUser} setUser={setProfileUser} editable={true}/>
     </>
   )
