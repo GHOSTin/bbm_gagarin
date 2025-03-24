@@ -12,6 +12,7 @@ import {
   Title,
 } from '@mantine/core';
 import classes from './LoginForm.module.css';
+import { notifications } from '@mantine/notifications';
 
 interface ILoginFormProps {}
 
@@ -49,8 +50,12 @@ const LoginForm: React.FC<ILoginFormProps> = () => {
       } else {
         setLoading(false)
       }
-    } catch (error) {
-      console.error('Ошибка при авторизации:', error);
+    } catch (error: any) {
+      notifications.show({
+        color: 'red',
+        autoClose: true,
+        message: error.response?.data?.message
+      })
       setLoading(false)
     }
   };
@@ -82,11 +87,16 @@ const LoginForm: React.FC<ILoginFormProps> = () => {
           Войти
         </Button>
       </form>
-        <Text ta="center" mt="md">
-          <Anchor c="dimmed" size="sm" href={'/forgot-password'}>
-            Забыли пароль?
-          </Anchor>
-        </Text>
+      <Text ta="center" mt="md">
+        <Anchor c="dimmed" size="md" href={'/signup'}>
+          Зарегистрироваться
+        </Anchor>
+      </Text>
+      <Text ta="center" mt="md">
+        <Anchor c="dimmed" size="sm" href={'/forgot-password'}>
+          Забыли пароль?
+        </Anchor>
+      </Text>
     </>
 )};
 

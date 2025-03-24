@@ -2,7 +2,6 @@ import React, { Suspense, useEffect } from 'react';
 import { useSetAtom } from 'jotai';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { isAuthenticatedState } from '../atoms.ts';
-import LoginPage from '@/pages/LoginPage.tsx';
 import ProfilePage from '@/pages/profilePage.tsx';
 import { NavSidebarLayout, PublicLayout } from '@/app/layouts';
 import { NotFound } from '@/components/ui/NotFound';
@@ -20,6 +19,9 @@ import { Loader } from '@mantine/core';
 import { ChecklistsPage } from '@/pages/checklistsPage.tsx';
 import { ChecklistNewPage } from '@/pages/checklistNewPage.tsx';
 import { ForgotPasswordForm } from '@/components/ui/forgotPasswordForm/forgotPasswordForm.tsx';
+import { ResetPasswordForm } from '@/components/ui/resetPasswordForm/resetPasswordForm.tsx';
+import LoginForm from '@/components/ui/LoginForm/LoginForm.tsx';
+import { SignUpForm } from '@/components/ui/signUp/signUpForm.tsx';
 
 const AtomsDevtools: React.FC<React.PropsWithChildren> = ({ children }) => {
   useAtomsDevtools('bbm')
@@ -43,8 +45,10 @@ const App: React.FC = () => {
         <Routes>
           <Route element={<PublicRoute/>}>
             <Route element={<PublicLayout/>}>
-              <Route index path="/login" element={<LoginPage/>} />
+              <Route index path="/login" element={<LoginForm/>} />
+              <Route index path="/signup" element={<SignUpForm/>} />
               <Route index path="/forgot-password" element={<ForgotPasswordForm/>} />
+              <Route index path="/reset-password" element={<ResetPasswordForm/>} />
             </Route>
           </Route>
           <Route element={<PrivateRoute/>}>
