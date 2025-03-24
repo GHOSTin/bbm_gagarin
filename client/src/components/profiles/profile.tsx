@@ -75,7 +75,7 @@ const Profile: React.FC<ProfilePageProps> = ({editable, user, setUser}: ProfileP
 
   return (
     <>
-      {user?.completedTests?.length ? <ProfileTestsResults results={user.completedTests} /> : null}
+      {user?.completedTests?.length >=4 ? <ProfileTestsResults results={user.completedTests} /> : null}
       <form onSubmit={form.onSubmit(onSubmit)}>
         <SimpleGrid cols={{ base: 1, sm: 3 }} mt="xl">
           <TextInput
