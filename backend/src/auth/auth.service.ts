@@ -14,6 +14,8 @@ import { ConfigService } from '@nestjs/config';
 import { UserEntity } from '../users/entities/user.entity';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { Response } from 'express';
+import { EmailService } from '@/email/email.service';
+import { ResetPasswordDto } from '@/auth/dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -21,18 +23,16 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private readonly emailService: EmailService
   ) {}
 
   async signUp(createUserDto: CreateUserDto): Promise<AuthEntity> {
-    // Check if user exists
     const userExists = await this.usersService.user({
       email: createUserDto.email,
     });
     if (userExists) {
-      throw new BadRequestException('User already exists');
+      throw new BadRequestException('Пользователь уже существует');
     }
-
-    // Hash password
     const hash = await this.hashData(createUserDto.password);
     const newUser = await this.usersService.createUser({
       ...createUserDto,
@@ -50,15 +50,16 @@ export class AuthService {
     { email, password }: LoginDto,
     response: Response,
   ): Promise<AuthEntity> {
-    const user = await this.usersService.user({ email: email });
+    const user = await this.usersService.user({ email });
     if (!user) {
       throw new NotFoundException(
         `Пользователя с email ${email} не существует`,
       );
     }
     const isPasswordValid = await argon2.verify(user.password!, password);
+
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Не верный пароль');
+      throw new NotFoundException('Не верный пароль');
     }
     const tokens = await this.getTokens(user.id, user.email);
     await this.updateRefreshToken(user.id, tokens.refreshToken, response);
@@ -67,6 +68,26 @@ export class AuthService {
       accessToken: tokens.accessToken,
       user: new UserEntity(user),
     };
+  }
+
+  async forgotPassword(email: string): Promise<void> {
+    const user = await this.usersService.user({email});
+    if (!user) {
+      throw new NotFoundException(`Не найден пользователь с email: ${email}`);
+    }
+    return await this.emailService.sendResetPasswordLink(email);
+  }
+
+  async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<void> {
+    const email = await this.emailService.decodeConfirmationToken(resetPasswordDto.token);
+
+    const user = this.usersService.user({email});
+    if (!user) {
+      throw new NotFoundException(`No user found for email: ${email}`);
+    }
+
+    const hash = await this.hashData(resetPasswordDto.password);
+    await this.usersService.updateUser({where: {email}, data: {password: hash, resetToken: null}})
   }
 
   async logout(userId: number, response: Response): Promise<UserEntity> {

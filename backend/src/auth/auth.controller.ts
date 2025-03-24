@@ -59,4 +59,17 @@ export class AuthController {
       accessOnly: true,
     });
   }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() { email }: { email: string }): Promise<void> {
+    return this.authService.forgotPassword(email);
+  }
+
+  @HttpCode(200)
+  @Post('reset-password')
+  async resetPassword(
+    @Body() { token, password }: { token: string; password: string }
+  ): Promise<void> {
+    return this.authService.resetPassword({token, password});
+  }
 }
