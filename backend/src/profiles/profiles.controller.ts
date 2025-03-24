@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -23,7 +32,7 @@ export class ProfilesController {
   }
 
   @ApiBearerAuth()
-  @ApiOkResponse({isArray: true, type: ProfileEntity})
+  @ApiOkResponse({ isArray: true, type: ProfileEntity })
   @Get()
   @Roles(Role.ADMIN, Role.MODERATOR)
   @UseGuards(RolesGuard)
@@ -33,7 +42,7 @@ export class ProfilesController {
 
   @ApiBearerAuth()
   @Get(':id')
-  @ApiOkResponse({type: ProfileEntity})
+  @ApiOkResponse({ type: ProfileEntity })
   findOne(@Param('id') id: string) {
     return this.profilesService.profile({ id });
   }
@@ -41,7 +50,10 @@ export class ProfilesController {
   @ApiBearerAuth()
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
-    return this.profilesService.updateProfile({where: { id }, data: updateProfileDto});
+    return this.profilesService.updateProfile({
+      where: { id },
+      data: updateProfileDto,
+    });
   }
 
   @ApiBearerAuth()

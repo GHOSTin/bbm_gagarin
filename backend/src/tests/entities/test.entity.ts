@@ -1,25 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNumber, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsJSON, IsNumber, IsString, IsUUID } from 'class-validator';
+import { JsonValue } from '@prisma/client/runtime/client';
 
 export class TestEntity {
   @ApiProperty()
   @IsUUID()
   id: string;
 
-  @ApiProperty({type: Number})
-  @IsNumber()
-  testId: 1|2|3|4;
+  @ApiProperty({ type: String })
+  @IsString()
+  type: 'epi' | 'holland';
 
   @ApiProperty()
   @IsNumber()
   userId: number;
 
-  @ApiProperty({required: false})
+  @ApiProperty({ required: false })
   @IsBoolean()
   isCompleted: boolean;
 
   @ApiProperty()
-  @IsString()
-  results: string;
-
+  @IsJSON()
+  result: Exclude<JsonValue, null>;
 }

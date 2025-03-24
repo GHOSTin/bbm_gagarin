@@ -25,9 +25,9 @@ export class AuthService {
 
   async signUp(createUserDto: CreateUserDto): Promise<AuthEntity> {
     // Check if user exists
-    const userExists = await this.usersService.user(
-      {email: createUserDto.email},
-    );
+    const userExists = await this.usersService.user({
+      email: createUserDto.email,
+    });
     if (userExists) {
       throw new BadRequestException('User already exists');
     }
@@ -42,31 +42,41 @@ export class AuthService {
     await this.updateRefreshToken(newUser.id, tokens.refreshToken);
     return {
       accessToken: tokens.accessToken,
-      user: new UserEntity(newUser)
+      user: new UserEntity(newUser),
     };
   }
 
-  async login({ email, password }: LoginDto, response: Response): Promise<AuthEntity> {
-    const user = await this.usersService.user({email: email});
-    if(!user) {
-      throw new NotFoundException(`Пользователя с email ${email} не существует`)
+  async login(
+    { email, password }: LoginDto,
+    response: Response,
+  ): Promise<AuthEntity> {
+    const user = await this.usersService.user({ email: email });
+    if (!user) {
+      throw new NotFoundException(
+        `Пользователя с email ${email} не существует`,
+      );
     }
     const isPasswordValid = await argon2.verify(user.password!, password);
-    if(!isPasswordValid) {
-      throw new UnauthorizedException('Не верный пароль')
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Не верный пароль');
     }
     const tokens = await this.getTokens(user.id, user.email);
     await this.updateRefreshToken(user.id, tokens.refreshToken, response);
 
     return {
       accessToken: tokens.accessToken,
-      user: new UserEntity(user)
-    }
+      user: new UserEntity(user),
+    };
   }
 
   async logout(userId: number, response: Response): Promise<UserEntity> {
     response.clearCookie('refreshToken');
-    return new UserEntity(await this.usersService.updateUser({where: {id: userId}, data: { refreshToken: null }}));
+    return new UserEntity(
+      await this.usersService.updateUser({
+        where: { id: userId },
+        data: { refreshToken: null },
+      }),
+    );
   }
 
   hashData(data: string) {
@@ -74,16 +84,21 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string): Promise<any> {
-    console.log(`[AuthService] validateUser: email=${email}, password=${password}`)
+    console.log(
+      `[AuthService] validateUser: email=${email}, password=${password}`,
+    );
     return await this.usersService.validateUser(email, password);
   }
 
-  async updateRefreshToken(userId: number, refreshToken: string, response?: Response) {
+  async updateRefreshToken(
+    userId: number,
+    refreshToken: string,
+    response?: Response,
+  ) {
     if (response) {
-      const { exp } = this.jwtService.verify(
-        refreshToken,
-        {secret: this.configService.get<string>('JWT_REFRESH_SECRET')}
-      );
+      const { exp } = this.jwtService.verify(refreshToken, {
+        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+      });
       response.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: this.configService.get<string>('NODE_ENV') === 'production',
@@ -91,29 +106,40 @@ export class AuthService {
       });
     }
     const hashedRefreshToken = await this.hashData(refreshToken);
-    await this.usersService.updateUser({where: {id: userId}, data: {
-      refreshToken: hashedRefreshToken,
-    }});
+    await this.usersService.updateUser({
+      where: { id: userId },
+      data: {
+        refreshToken: hashedRefreshToken,
+      },
+    });
   }
 
-  async refreshTokens(userId: number, refreshToken: string, options?: {response?: Response, accessOnly: boolean}): Promise<AuthEntity> {
-    const user = await this.usersService.user({id: userId});
+  async refreshTokens(
+    userId: number,
+    refreshToken: string,
+    options?: { response?: Response; accessOnly: boolean },
+  ): Promise<AuthEntity> {
+    const user = await this.usersService.user({ id: userId });
     if (!user || !user.refreshToken) {
       throw new ForbiddenException('Доступ запрещен');
     }
     const refreshTokensMatch = await argon2.verify(
       user.refreshToken,
-      refreshToken
+      refreshToken,
     );
     if (!refreshTokensMatch) throw new ForbiddenException('Доступ запрещен');
     const tokens = await this.getTokens(user.id, user.email);
-    if(!options?.accessOnly) {
-      await this.updateRefreshToken(user.id, tokens.refreshToken, options?.response);
+    if (!options?.accessOnly) {
+      await this.updateRefreshToken(
+        user.id,
+        tokens.refreshToken,
+        options?.response,
+      );
     }
     return {
       accessToken: tokens.accessToken,
-      user: new UserEntity(user)
-    }
+      user: new UserEntity(user),
+    };
   }
 
   async getTokens(userId: number, email: string) {
@@ -125,7 +151,9 @@ export class AuthService {
         },
         {
           secret: this.configService.get<string>('JWT_SECRET'),
-          expiresIn: this.configService.getOrThrow<string>('JWT_REFRESH_EXPIRE_TIME'),
+          expiresIn: this.configService.getOrThrow<string>(
+            'JWT_REFRESH_EXPIRE_TIME',
+          ),
         },
       ),
       this.jwtService.signAsync(
@@ -135,7 +163,9 @@ export class AuthService {
         },
         {
           secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-          expiresIn: this.configService.getOrThrow<string>('JWT_REFRESH_EXPIRE_TIME'),
+          expiresIn: this.configService.getOrThrow<string>(
+            'JWT_REFRESH_EXPIRE_TIME',
+          ),
         },
       ),
     ]);
@@ -145,5 +175,4 @@ export class AuthService {
       refreshToken,
     };
   }
-
 }

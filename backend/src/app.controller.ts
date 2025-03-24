@@ -11,7 +11,7 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly userService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   @Get()
@@ -23,6 +23,6 @@ export class AppController {
   @ApiBearerAuth()
   @Get('profile')
   getProfile(@Request() req) {
-    return new UserEntity(req.user)
+    return new UserEntity(req.user);
   }
 }

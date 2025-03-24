@@ -9,7 +9,7 @@ export class ProfilesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createProfile(createProfileDto: CreateProfileDto): Promise<Profile> {
-    return this.prisma.profile.create({data: {...createProfileDto}})
+    return this.prisma.profile.create({ data: { ...createProfileDto } });
   }
 
   async profiles(params: {
@@ -22,22 +22,26 @@ export class ProfilesService {
     return this.prisma.profile.findMany(params);
   }
 
-  async profile(profileWhereUniqueInput: Prisma.ProfileWhereUniqueInput): Promise<Profile | null> {
+  async profile(
+    profileWhereUniqueInput: Prisma.ProfileWhereUniqueInput,
+  ): Promise<Profile | null> {
     return this.prisma.profile.findUnique({
-      where: profileWhereUniqueInput
+      where: profileWhereUniqueInput,
     });
   }
 
   async updateProfile(params: {
-    where: Prisma.ProfileWhereUniqueInput,
-    data: UpdateProfileDto
+    where: Prisma.ProfileWhereUniqueInput;
+    data: UpdateProfileDto;
   }): Promise<Profile> {
     return this.prisma.profile.update(params);
   }
 
-  async removeProfile(profileWhereUniqueInput: Prisma.ProfileWhereUniqueInput): Promise<Profile | null> {
+  async removeProfile(
+    profileWhereUniqueInput: Prisma.ProfileWhereUniqueInput,
+  ): Promise<Profile | null> {
     return this.prisma.profile.delete({
-      where: profileWhereUniqueInput
+      where: profileWhereUniqueInput,
     });
   }
 }

@@ -1,18 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateProfileDto {
   @ApiProperty()
   @IsString()
-  firstName: string
+  firstName: string;
 
   @ApiProperty()
   @IsString()
-  lastName: string
+  lastName: string;
 
   @ApiProperty()
   @IsNumber()
-  userId: number
+  userId: number;
 
   @ApiProperty({ required: false })
   @IsString()
@@ -31,9 +37,9 @@ export class CreateProfileDto {
 
   @ApiProperty()
   @IsBoolean()
-  acceptTerms: false
+  acceptTerms: false;
 
-  @ApiProperty({required: false})
+  @ApiProperty({ required: false })
   @IsString()
-  phone?: string
+  phone?: string;
 }

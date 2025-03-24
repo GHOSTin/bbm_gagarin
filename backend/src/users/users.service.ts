@@ -1,4 +1,3 @@
-
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { User, Prisma } from '@prisma/client';
@@ -15,8 +14,14 @@ export class UsersService {
       where: userWhereUniqueInput,
       include: {
         profile: true,
-        completedTests: true
-      }
+        completedTests: true,
+        ProfTests: true,
+        checkLists: {
+          include: {
+            profTest: true
+          }
+        }
+      },
     });
   }
 
@@ -36,14 +41,15 @@ export class UsersService {
       orderBy,
       include: {
         profile: true,
-        completedTests: true
-      }
+        completedTests: true,
+        ProfTests: true,
+      },
     });
   }
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     return this.prisma.user.create({
-      data: {...data, password: await argon2.hash(data?.password!)}
+      data: { ...data, password: await argon2.hash(data?.password!) },
     });
   }
 
@@ -64,13 +70,18 @@ export class UsersService {
     });
   }
 
-  async validateUser(email: string, password: string): Promise<User | undefined> {
-    console.log(`[UsersService] validateUser, email: ${email}, password: ${password}`)
-    const user = await this.user({email: email, password: password});
+  async validateUser(
+    email: string,
+    password: string,
+  ): Promise<User | undefined> {
+    console.log(
+      `[UsersService] validateUser, email: ${email}, password: ${password}`,
+    );
+    const user = await this.user({ email: email, password: password });
     if (user) {
-      console.log('[UsersService] validateUser: found user', user)
-      return { ...user, password: null }
+      console.log('[UsersService] validateUser: found user', user);
+      return { ...user, password: null };
     }
-    return undefined
+    return undefined;
   }
 }

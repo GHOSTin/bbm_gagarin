@@ -1,4 +1,9 @@
-import { ExecutionContext, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -9,7 +14,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 export class RefreshTokenGuard extends AuthGuard('refreshToken') {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const {refreshToken} = request.cookies;
+    const { refreshToken } = request.cookies;
     if (!refreshToken) {
       throw new ForbiddenException();
     }

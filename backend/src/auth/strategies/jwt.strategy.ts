@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 export class JwtStrategy extends PassportStrategy(Strategy, 'accessToken') {
   constructor(
     configService: ConfigService,
-    private usersService: UsersService
+    private usersService: UsersService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -17,11 +17,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'accessToken') {
   }
 
   async validate(payload: { sub: number }) {
-    const user = await this.usersService.user({id: payload.sub});
+    const user = await this.usersService.user({ id: payload.sub });
     if (!user) {
       throw new UnauthorizedException();
     }
 
-    return {...payload, user};
+    return { ...payload, user };
   }
 }
