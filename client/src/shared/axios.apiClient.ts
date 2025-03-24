@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import globalRouter from '@/shared/globalRouter.ts';
-import { AuthEntity } from 'types';
+import { AuthEntity } from '@/shared/types';
 
 const apiClient = axios.create({
   baseURL: `${import.meta.env.VITE_REACT_APP_API_URL}`,
@@ -19,9 +18,8 @@ export const logoutUserFn = async () => {
   const response = await apiClient.post('/auth/logout');
   if (response.status === 200) {
     localStorage.removeItem('accessToken');
-    globalRouter.navigate && globalRouter.navigate("/login", {replace: true});
   }
-  return response.data;
+  return response;
 };
 
 export const loginUserFn = async (data: { username: string; password: string; }) => {

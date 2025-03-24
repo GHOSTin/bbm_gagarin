@@ -15,7 +15,7 @@ export const LogoutButton: React.FC = () => {
     event.preventDefault();
     try {
       const response = await logoutUserFn();
-      if (response) {
+      if (response.status === 200) {
         setJwt(null);
         setIsAuth(false);
         globalRouter.navigate && globalRouter.navigate('/login', {replace: true})
