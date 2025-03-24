@@ -4,7 +4,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { isAuthenticatedState } from '../atoms.ts';
 import LoginPage from '@/pages/LoginPage.tsx';
 import ProfilePage from '@/pages/profilePage.tsx';
-import { NavSidebarLayout } from '@/app/layouts/navSidebarLayout.tsx';
+import { NavSidebarLayout, PublicLayout } from '@/app/layouts';
 import { NotFound } from '@/components/ui/NotFound';
 import { PrivateRoute, PublicRoute } from '@/components/routes';
 import { TestEPI } from '@/components/ui/testEPI';
@@ -19,6 +19,7 @@ import { TestProfession } from '@/components/ui/testProfession/testProfession.ts
 import { Loader } from '@mantine/core';
 import { ChecklistsPage } from '@/pages/checklistsPage.tsx';
 import { ChecklistNewPage } from '@/pages/checklistNewPage.tsx';
+import { ForgotPasswordForm } from '@/components/ui/forgotPasswordForm/forgotPasswordForm.tsx';
 
 const AtomsDevtools: React.FC<React.PropsWithChildren> = ({ children }) => {
   useAtomsDevtools('bbm')
@@ -41,7 +42,10 @@ const App: React.FC = () => {
         <Suspense fallback={<Loader color="blue" type="bars" size={50} />}>
         <Routes>
           <Route element={<PublicRoute/>}>
-            <Route index path="/login" element={<LoginPage/>} />
+            <Route element={<PublicLayout/>}>
+              <Route index path="/login" element={<LoginPage/>} />
+              <Route index path="/forgot-password" element={<ForgotPasswordForm/>} />
+            </Route>
           </Route>
           <Route element={<PrivateRoute/>}>
             <Route element={<NavSidebarLayout/>}>

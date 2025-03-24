@@ -6,7 +6,6 @@ import { loginUserFn } from '@/shared/axios.apiClient.ts';
 import {
   Anchor,
   Button,
-  Paper,
   PasswordInput,
   Text,
   TextInput,
@@ -59,39 +58,36 @@ const LoginForm: React.FC<ILoginFormProps> = () => {
   //const onSubmit = handleSubmit((data) => console.log(data))
 
   return (
-    <div className={classes.wrapper}>
-      <Paper className={classes.form} radius={0} p={30}>
-        <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
-          Добро пожаловать!
-        </Title>
-        <form onSubmit={form.onSubmit(handleSubmit)} className={'login_form_root'}>
-          <TextInput
-            label="Логин"
-            placeholder="hello@gmail.com"
-            size="md"
-            key={form.key('username')}
-            {...form.getInputProps('username')}
-          />
-          <PasswordInput
-            label="Пароль"
-            placeholder="Ваш пароль"
-            mt="md"
-            size="md"
-            key={form.key('password')}
-            {...form.getInputProps('password')}
-          />
-          <Button fullWidth mt="xl" size="md" type="submit" loading={loading} loaderProps={{ type: 'dots' }}>
-            Войти
-          </Button>
-        </form>
-          <Text ta="center" mt="md">
-            <Anchor component="button" size="sm" onClick={(event) => event.preventDefault()}>
-              Забыли пароль?
-            </Anchor>
-          </Text>
-      </Paper>
-    </div>
-);
-};
+    <>
+      <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
+        Добро пожаловать!
+      </Title>
+      <form onSubmit={form.onSubmit(handleSubmit)} className={'login_form_root'}>
+        <TextInput
+          label="Логин"
+          placeholder="hello@gmail.com"
+          size="md"
+          key={form.key('username')}
+          {...form.getInputProps('username')}
+        />
+        <PasswordInput
+          label="Пароль"
+          placeholder="Ваш пароль"
+          mt="md"
+          size="md"
+          key={form.key('password')}
+          {...form.getInputProps('password')}
+        />
+        <Button fullWidth mt="xl" size="md" type="submit" loading={loading} loaderProps={{ type: 'dots' }}>
+          Войти
+        </Button>
+      </form>
+        <Text ta="center" mt="md">
+          <Anchor c="dimmed" size="sm" href={'/forgot-password'}>
+            Забыли пароль?
+          </Anchor>
+        </Text>
+    </>
+)};
 
 export default LoginForm;
