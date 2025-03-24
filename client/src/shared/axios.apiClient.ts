@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import globalRouter from '@/shared/globalRouter.ts';
-import { AuthEntity } from '@/shared/models';
+import { AuthEntity } from 'types';
 
 const apiClient = axios.create({
   baseURL: `${import.meta.env.VITE_REACT_APP_API_URL}`,

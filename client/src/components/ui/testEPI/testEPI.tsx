@@ -5,8 +5,9 @@ import {questions, lieSchema, extroversionSchema, neuroticismSchema} from './que
 import TestEpiResultDisplay from '@/components/ui/testEPI/testEpiResultDisplay.tsx';
 import apiClient from '@/shared/axios.apiClient.ts';
 import { useAtomValue } from 'jotai';
-import { temperamentTypeState } from '@/atoms.ts';
+import { currentUser, temperamentTypeState } from '@/atoms.ts';
 import { useNavigate } from 'react-router-dom';
+import { useAtom } from 'jotai';
 
 export const TestEPI: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -14,6 +15,7 @@ export const TestEPI: React.FC = () => {
   const [neuroticismScore, setNeuroticismScore] = useState(0);
   const [lieScore, setLieScore] = useState(0);
   const temperamentType = useAtomValue(temperamentTypeState);
+  const [user, setUser] = useAtom(currentUser);
   const navigate = useNavigate();
 
   const handleAnswerChange = (answer: boolean) => {
@@ -32,22 +34,25 @@ export const TestEPI: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Обработка ответов в соответствии с ключом
     try {
-      const response = await apiClient.post('tests/', {
+      const response = await apiClient.post('/tests', {
         type: 'epi',
-        testCompleted: true,
+        isComplete: true,
         result: {
           temperamentType,
-          lieScore,
-          extroversionScore,
-          neuroticismScore
+          data: [
+            {type: 'lie', score: lieScore},
+            {type: 'extroversion', score: extroversionScore},
+            {type: 'neuroticism', score: neuroticismScore}
+          ]
         }
       });
 
       if (response?.status === 200) {
+        const testResults = user.completedTests;
+        testResults.push(response.data);
+        setUser({...user, completedTests: testResults})
         navigate('/')
-        //TODO обработка корректного ответа от сервера
       }
     } catch {
       navigate('/')

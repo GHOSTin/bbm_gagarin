@@ -14,6 +14,11 @@ import globalRouter from '@/shared/globalRouter.ts';
 import { ProfilesPage } from '@/pages/profilesPage.tsx';
 import CurrentProfilePage from '@/pages/currentProfilePage.tsx';
 import HomePage from '@/pages/homePage.tsx';
+import { TestMotivation } from '@/components/ui/testMotivation';
+import { TestProfession } from '@/components/ui/testProfession/testProfession.tsx';
+import { Loader } from '@mantine/core';
+import { ChecklistsPage } from '@/pages/checklistsPage.tsx';
+import { ChecklistNewPage } from '@/pages/checklistNewPage.tsx';
 
 const AtomsDevtools: React.FC<React.PropsWithChildren> = ({ children }) => {
   useAtomsDevtools('bbm')
@@ -33,7 +38,7 @@ const App: React.FC = () => {
   return (
     <AtomsDevtools>
       <div className="App">
-        <Suspense fallback={<div>Загрузка данных...</div>}>
+        <Suspense fallback={<Loader color="blue" type="bars" size={50} />}>
         <Routes>
           <Route element={<PublicRoute/>}>
             <Route index path="/login" element={<LoginPage/>} />
@@ -49,6 +54,10 @@ const App: React.FC = () => {
             <Route element={<NavSidebarLayout/>}>
               <Route path="/test-epi" element={<TestEPI/>} />
               <Route path="/test-holland" element={<TestHolland/>} />
+              <Route path="/test-motivation" element={<TestMotivation/>} />
+              <Route path="/test-profession" element={<TestProfession/>} />
+              <Route path="/checklists" element={<ChecklistsPage/>} />
+              <Route path="/checklists/new" element={<ChecklistNewPage/>} />
             </Route>
           </Route>
           <Route element={<PrivateRoute accessRoles={['ADMIN', 'MODERATOR']}/>}>

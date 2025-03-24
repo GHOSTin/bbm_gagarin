@@ -6,9 +6,10 @@ import { DateInput, DatesProvider } from '@mantine/dates';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import 'dayjs/locale/ru';
-import { ProfileEntity } from '@/shared/models/ProfileEntity.ts';
+import { ProfileEntity } from '@/shared/types/ProfileEntity.ts';
 import apiClient from '@/shared/axios.apiClient.ts';
-import { UserEntity } from '@/shared/models';
+import { UserEntity } from '@/shared/types';
+import { ProfileTestsResults } from '@/components/profiles/';
 
 dayjs.extend(customParseFormat);
 
@@ -29,7 +30,7 @@ const Profile: React.FC<ProfilePageProps> = ({editable, user, setUser}: ProfileP
       middleName: '',
       email: '',
       birthday: null,
-      phone: null,
+      phone: '',
       acceptTerms: false
     },
     onSubmitPreventDefault: 'always',
@@ -45,10 +46,10 @@ const Profile: React.FC<ProfilePageProps> = ({editable, user, setUser}: ProfileP
     const currentProfile = {
       firstName: user.profile?.firstName??'',
       lastName: user.profile?.lastName??'',
-      middleName: user.profile?.middleName,
+      middleName: user.profile?.middleName??'',
       birthday: user.profile?.birthday && new Date(user.profile?.birthday!??null),
       acceptTerms: user.profile?.acceptTerms??false,
-      phone: user.profile?.phone,
+      phone: user.profile?.phone??'',
       email: user.email
     };
     form.setValues(currentProfile);
@@ -74,6 +75,7 @@ const Profile: React.FC<ProfilePageProps> = ({editable, user, setUser}: ProfileP
 
   return (
     <>
+      {user?.completedTests?.length ? <ProfileTestsResults results={user.completedTests} /> : null}
       <form onSubmit={form.onSubmit(onSubmit)}>
         <SimpleGrid cols={{ base: 1, sm: 3 }} mt="xl">
           <TextInput
