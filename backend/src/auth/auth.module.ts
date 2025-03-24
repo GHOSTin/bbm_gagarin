@@ -12,13 +12,8 @@ import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
 import { ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [
-    UsersModule,
-    PrismaModule,
-    PassportModule,
-    JwtModule.register({}),
-  ],
+  imports: [UsersModule, PrismaModule, PassportModule, JwtModule.register({})],
   providers: [AuthService, LocalStrategy, JwtStrategy, RefreshTokenStrategy],
-  controllers: [AuthController]
+  controllers: [AuthController],
 })
 export class AuthModule {}

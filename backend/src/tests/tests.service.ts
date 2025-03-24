@@ -5,10 +5,10 @@ import { CreateTestDto } from '@/tests/dto/create-test.dto';
 
 @Injectable()
 export class TestsService {
-  constructor(private readonly prisma: PrismaService) {  }
+  constructor(private readonly prisma: PrismaService) {}
 
   createTestResult(createTestDto: CreateTestDto) {
-    return this.prisma.usersTest.create({data: {...createTestDto}})
+    return this.prisma.usersTest.create({ data: { ...createTestDto } });
   }
 
   findTests(params: {

@@ -1,18 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNumber } from 'class-validator';
+import { JsonValue } from '@prisma/client/runtime/client';
+import { IsBoolean, IsString } from 'class-validator';
 
 export class CreateTestDto {
   @ApiProperty()
-  @IsNumber()
-  testId: 1 | 2 | 3 | 4
+  @IsString()
+  type: string;
 
   @ApiProperty()
-  userId: number
+  userId: number;
 
   @ApiProperty()
-  results: string
+  result: Exclude<JsonValue, null>;
 
-  @ApiProperty({required: false})
+  @ApiProperty({ required: false })
   @IsBoolean()
-  isComplete: boolean
+  isComplete: boolean;
 }

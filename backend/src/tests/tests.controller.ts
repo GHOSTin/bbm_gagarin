@@ -8,6 +8,7 @@ import {
   UseGuards,
   HttpCode,
   ParseUUIDPipe,
+  Request,
 } from '@nestjs/common';
 import { TestsService } from './tests.service';
 import { CreateTestDto } from './dto/create-test.dto';
@@ -23,21 +24,24 @@ export class TestsController {
 
   @Post()
   @HttpCode(200)
-  @ApiOkResponse({type: TestEntity})
-  create(@Body() createTestDto: CreateTestDto) {
-    return this.testsService.createTestResult({...createTestDto, isComplete: true});
+  @ApiOkResponse({ type: TestEntity })
+  create(@Request() req, @Body() createTestDto: CreateTestDto) {
+    return this.testsService.createTestResult({
+      ...createTestDto,
+      userId: req.user?.['id'],
+    });
   }
 
   @Get(':id')
   @HttpCode(200)
-  @ApiOkResponse({type: TestEntity})
-  findById(@Param ('id', ParseUUIDPipe) id: string) {
-    return this.testsService.findTests({where: {id}})
+  @ApiOkResponse({ type: TestEntity })
+  findById(@Param('id', ParseUUIDPipe) id: string) {
+    return this.testsService.findTests({ where: { id } });
   }
 
   @Get('/users/:id')
-  @ApiOkResponse({type: Array<TestEntity>})
-  findByUserId(@Param ('id', ParseIntPipe) userId: number) {
-    return this.testsService.findTests({where: {userId}});
+  @ApiOkResponse({ type: TestEntity, isArray: true })
+  findByUserId(@Param('id', ParseIntPipe) userId: number) {
+    return this.testsService.findTests({ where: { userId } });
   }
 }

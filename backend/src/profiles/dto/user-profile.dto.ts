@@ -7,6 +7,6 @@ export class profileUserDto extends PickType(UserEntity, ['id', 'role']) {
   @ApiProperty()
   id: number;
 
-  @ApiProperty({enum: Role})
-  role: Roles
+  @ApiProperty({ enum: Role })
+  role: Roles;
 }

@@ -1,19 +1,19 @@
 import { Module } from '@nestjs/common';
-import { TestsService } from './tests.service';
-import { TestsController } from './tests.controller';
+import { ProfTestsService } from './prof-tests.service';
+import { ProfTestsController } from './prof-tests.controller';
 import { PrismaService } from '@/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '@/users/users.service';
 import { ConfigService } from '@nestjs/config';
 
 @Module({
-  controllers: [TestsController],
+  controllers: [ProfTestsController],
   providers: [
-    TestsService,
+    ProfTestsService,
     PrismaService,
     JwtService,
     UsersService,
     ConfigService,
   ],
 })
-export class TestsModule {}
+export class ProfTestsModule {}

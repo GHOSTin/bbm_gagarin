@@ -11,20 +11,20 @@ export class ProfileEntity {
   groupId: string | null;
 
   @ApiProperty()
-  firstName: string
+  firstName: string;
 
   @ApiProperty()
-  lastName: string
+  lastName: string;
 
   @ApiProperty({ required: false })
-  middleName?: string
+  middleName?: string;
 
   @ApiProperty({ required: false })
-  birthday: Date
+  birthday: Date;
 
   @ApiProperty()
-  acceptTerms: boolean
+  acceptTerms: boolean;
 
   @ApiProperty()
-  phone?: string
+  phone?: string;
 }

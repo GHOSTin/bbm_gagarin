@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UserEntity } from './entities/user.entity';
@@ -19,14 +29,17 @@ export class UsersController {
   @Post()
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
-  @ApiOkResponse({type: UserEntity})
+  @ApiOkResponse({ type: UserEntity })
   async create(@Body() createUserDto: CreateUserDto) {
-    const user = {...createUserDto, profile: {
-      create: {
-        firstName: '',
-        lastName: ''
-      }
-    }}
+    const user = {
+      ...createUserDto,
+      profile: {
+        create: {
+          firstName: '',
+          lastName: '',
+        },
+      },
+    };
     return new UserEntity(await this.usersService.createUser(user));
   }
 
@@ -37,14 +50,14 @@ export class UsersController {
   @ApiOkResponse({ type: UserEntity, isArray: true })
   async findAll() {
     const users = await this.usersService.users({});
-    return users.map(user=>new UserEntity(user))
+    return users.map((user) => new UserEntity(user));
   }
 
   @ApiBearerAuth()
   @Get(':id')
   @ApiOkResponse({ type: UserEntity })
   async findOne(@Param('id', ParseIntPipe) id: number) {
-    return new UserEntity(await this.usersService.user({id: id}));
+    return new UserEntity(await this.usersService.user({ id: id }));
   }
 
   @ApiBearerAuth()
@@ -60,11 +73,16 @@ export class UsersController {
       name: updateUserDto.name,
       profile: {
         update: {
-          ...updateUserDto.profile
-        }
-      }
-    }
-    return new UserEntity(await this.usersService.updateUser({where: {id: id}, data: {...data, updatedAt: new Date(Date.now())}}));
+          ...updateUserDto.profile,
+        },
+      },
+    };
+    return new UserEntity(
+      await this.usersService.updateUser({
+        where: { id: id },
+        data: { ...data, updatedAt: new Date(Date.now()) },
+      }),
+    );
   }
 
   @Delete(':id')
@@ -73,6 +91,6 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @ApiOkResponse({ type: UserEntity })
   async remove(@Param('id', ParseIntPipe) id: number) {
-    return new UserEntity(await this.usersService.deleteUser({id: id}));
+    return new UserEntity(await this.usersService.deleteUser({ id: id }));
   }
 }
