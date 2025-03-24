@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import { UserEntity } from '../shared/types';
 import Profile from '@/components/profiles/profile.tsx';
 import { ChecklistsList } from '@/components/checklists';
+import { ProfileTestsResults } from '@/components/profiles';
+import { Title } from '@mantine/core';
 
 interface ProfilePageProps {}
 
@@ -36,6 +38,10 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
   return (
     <>
       <Profile user={profileUser} setUser={setProfileUser} editable={false}/>
+      {profileUser?.completedTests?.length ? <ProfileTestsResults results={profileUser.completedTests} /> : null}
+      <Title order={3} my={10}>
+        Заполненные чек-листы
+      </Title>
       {profileUser.checkLists ? (<ChecklistsList checklists={profileUser?.checkLists} />) : null}
     </>
   )

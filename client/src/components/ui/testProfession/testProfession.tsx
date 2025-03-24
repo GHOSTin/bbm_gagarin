@@ -7,15 +7,7 @@ import { currentUser } from '@/atoms.ts';
 import { questions } from './questions.json';
 import {independence, awareness, emotion, planning, decisionMaking} from './scales.json';
 import apiClient from '@/shared/axios.apiClient.ts';
-import { RadarChart } from '@mantine/charts';
-
-const axisName: {[key: string]: string} = {
-  awareness: 'Информированность',
-  decisionMaking: 'Принятие решений',
-  emotion: 'Эмоциональное отношение',
-  independence: 'Автономность',
-  planning: 'Планирование',
-};
+import { TestProfessionResultDisplay } from '@/components/ui/testProfession/testProfessionResultDisplay.tsx';
 
 export const TestProfession: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -95,10 +87,6 @@ export const TestProfession: React.FC = () => {
 
   const currentQuestion = questions[currentQuestionIndex];
 
-  results.forEach((elem:{type: string, value: number, axis?: string})=> {
-    return elem['axis'] = axisName[elem.type];
-  })
-
   return (
     <Card withBorder radius="md" p="xl" className={classes.card}>
       <Box component={'form'} onSubmit={handleSubmit}>
@@ -127,23 +115,7 @@ export const TestProfession: React.FC = () => {
         )}
         {currentQuestionIndex === questions.length && (
           <>
-          <Group justify={'start'} grow gap={'lg'} mb={20}>
-            <RadarChart
-              h={200}
-              data={results}
-              dataKey={'type'}
-              series={[{name: 'value', color: 'green.6'}]}
-              withPolarGrid
-              withPolarAngleAxis
-              polarGridProps={{gridType: 'circle'}}
-              polarAngleAxisProps={{dataKey: 'axis'}}
-            />
-            <Text component={'div'}>
-              {results.map((elem)=> (
-                <Text>{elem.axis} - {elem.value}</Text>
-              ))}
-            </Text>
-          </Group>
+            <TestProfessionResultDisplay results={results}/>
             <Button type="submit">Завершить опрос</Button>
           </>
         )}
