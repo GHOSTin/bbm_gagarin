@@ -27,6 +27,7 @@ model User {
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @default(now())
   refreshToken   String?
+  resetToken     String?
   role           Roles       @default(USER)
   profile        Profile?
   completedTests UsersTest[]
@@ -72,7 +73,7 @@ model ProfTest {
 }
 
 model CheckList {
-  id         String   @id @default(uuid()) @unique
+  id         String   @id @unique @default(uuid())
   user       User     @relation(fields: [userId], references: [id])
   userId     Int
   profTest   ProfTest @relation(fields: [profTestId], references: [id])
