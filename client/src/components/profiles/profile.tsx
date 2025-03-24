@@ -9,7 +9,6 @@ import 'dayjs/locale/ru';
 import { ProfileEntity } from '@/shared/types/ProfileEntity.ts';
 import apiClient from '@/shared/axios.apiClient.ts';
 import { UserEntity } from '@/shared/types';
-import { ProfileTestsResults } from '@/components/profiles/';
 
 dayjs.extend(customParseFormat);
 
@@ -75,7 +74,6 @@ const Profile: React.FC<ProfilePageProps> = ({editable, user, setUser}: ProfileP
 
   return (
     <>
-      {user?.completedTests?.length >=4 ? <ProfileTestsResults results={user.completedTests} /> : null}
       <form onSubmit={form.onSubmit(onSubmit)}>
         <SimpleGrid cols={{ base: 1, sm: 3 }} mt="xl">
           <TextInput
