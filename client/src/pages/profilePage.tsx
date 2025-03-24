@@ -6,12 +6,13 @@ import apiClient from '@/shared/axios.apiClient.ts';
 import { useParams } from 'react-router-dom';
 import { UserEntity } from '../shared/types';
 import Profile from '@/components/profiles/profile.tsx';
+import { ChecklistsList } from '@/components/checklists';
 
 interface ProfilePageProps {}
 
 const ProfilePage: React.FC<ProfilePageProps> = () => {
   const { id } = useParams();
-  const [profileUser, setProfileUser] = useState({} as UserEntity);
+  const [profileUser, setProfileUser] = useState<UserEntity>({} as UserEntity);
 
   const [entityId, setEntityId] = useAtom(UserEntityIdAtom)
 
@@ -34,8 +35,8 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 
   return (
     <>
-      {`${id} ${profileUser?.profile?.firstName}`}
-     <Profile user={profileUser} setUser={setProfileUser} editable={false}/>
+      <Profile user={profileUser} setUser={setProfileUser} editable={false}/>
+      {profileUser.checkLists ? (<ChecklistsList checklists={profileUser?.checkLists} />) : null}
     </>
   )
 }

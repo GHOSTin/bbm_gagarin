@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/charts/styles.css';
-import './index.css'
+import '@mantine/notifications/styles.css';
 import App from './app/App.tsx'
 import { Provider as JotaiProvider } from 'jotai';
 import { createTheme, MantineProvider } from '@mantine/core';

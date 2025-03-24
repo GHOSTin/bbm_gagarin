@@ -79,7 +79,7 @@ export const TestHolland: React.FC = () => {
     <Card withBorder radius="md" p="xl" className={classes.card}>
       <Text size="lg" fw={700}>
         Тест на определение профессионального типа личности
-      </Text>0.0.
+      </Text>
       <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
         {currentQuestion < questionPairs.length && (
           <div className="question">

@@ -12,6 +12,8 @@
 
 import { ProfileEntity } from './ProfileEntity';
 import { TestEntity } from '@/shared/types/TestEntity.ts';
+import { ProfTestsEntity } from '@/shared/types/ProfTestsEntity.ts';
+import { CheckListEntity } from '@/shared/types/CheckListEntity.ts';
 
 export class UserEntity {
     'id': number;
@@ -22,6 +24,8 @@ export class UserEntity {
     'role': UserEntityRoleEnum;
     'profile'?: ProfileEntity;
     'completedTests': Array<Partial<TestEntity>>;
+    'ProfTests': Array<Partial<ProfTestsEntity>>;
+    'checkLists': Array<CheckListEntity>
 
     static readonly discriminator: string | undefined = undefined;
 
